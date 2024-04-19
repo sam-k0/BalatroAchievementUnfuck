@@ -1,1 +1,3 @@
 *.jkr
+*.txt
+__pycache__/

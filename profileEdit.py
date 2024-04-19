@@ -1,7 +1,3 @@
-# Credits to the man who showed me how Balatro compresses its files, problemsalved
-# Also worth noting you NEED python 3.11, otherwise zlib.compress() will be fucked.
-# Also thanks to Microsoft updating python is pain in the *ace* so please save your braincells and just use linux.
-
 import os
 import zlib 
 def GetCurrentDirectory():
@@ -21,21 +17,29 @@ def Decompress(bindata):
     return zlib.decompress(bindata, wbits=-zlib.MAX_WBITS)
 
 def Compress(save_file_data):
-        return zlib.compress(save_file_data, level=1)
+        return zlib.compress(save_file_data, level=1, wbits=-zlib.MAX_WBITS)
 
 
-def dump():
-    fpath = GetCurrentDirectory()+"\\py\\profileNEW.jkr"
+def GetLocalDirectory(dirname):
+    GetCurrentDirectory() + os.sep + dirname
+
+
+
+def dump(fpath):
     text = str(Decompress(ReadBinary(fpath)), encoding='ascii')
     # save this to a file
-    with open("profile.txt", "w") as f:
+    with open(GetCurrentDirectory()+os.sep+"dumped" +os.sep+ "dumped.txt", "w") as f:
         f.write(text)
 
-def recompress(): # reads a dumped file and recompresses it
-    text = ReadText(GetCurrentDirectory()+"\\profileDumpedOrig.txt")
+def recompress(fpath): # reads a dumped file and recompresses it
+    text = ReadText(fpath)
     savdata = Compress(bytes(text, encoding='ascii'))
-    savepath = GetCurrentDirectory()+"\\py\\profileNEW.jkr"
+    savepath = GetCurrentDirectory()+os.sep+"output"+os.sep+"profile.jkr"
     with open(savepath, "wb") as f:
         f.write(savdata)
+    return savepath
 
-recompress()
+if __name__ == "__main__":
+    exit()
+    #dump("profile.jkr")
+    #recompress("profile.txt")
